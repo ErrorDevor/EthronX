@@ -1,0 +1,34 @@
+@use "../../shared/styles/mixins" as *;
+@use "../../shared/styles/vars" as *;
+
+.banner {
+  height: fit-content;
+  padding: 1.8rem;
+  @include setContainer(151.2rem);
+  background-color: getColorBackground();
+
+  h3 {
+    text-align: center;
+    @include setSpaceGrotesk(1.6rem, 0.93, -0.04em, 500, getColorTextMain());
+
+    span {
+      font-weight: 700;
+    }
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .banner {
+    padding: 1.2rem 2.5rem;
+
+    h3 {
+      font-size: 1.2rem;
+      line-height: 1.1;
+    }
+  }
+}
+
+/*AOS*/
+// .banner {
+//   opacity: 0;
+// }

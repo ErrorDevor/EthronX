@@ -1,0 +1,303 @@
+@use "vars" as *;
+
+@mixin createFontFaceOptimized(
+  $name,
+  $weight,
+  $url,
+  $ttf: true,
+  $style: normal
+) {
+  @font-face {
+    font-family: $name;
+    font-weight: $weight;
+    font-style: $style;
+    font-display: swap;
+    @if $ttf {
+      src: url("#{$url}.woff2") format("woff2"),
+        url("#{$url}.woff") format("woff"),
+        url("#{$url}.ttf") format("truetype"),
+        url("#{$url}.eot") format("embedded-opentype");
+    } @else {
+      src: url("#{$url}.woff2") format("woff2"),
+        url("#{$url}.woff") format("woff"),
+        url("#{$url}.otf") format("opentype"),
+        url("#{$url}.eot") format("embedded-opentype");
+    }
+  }
+}
+
+@mixin mapArray($arr, $prop, $prefix) {
+  @each $key, $value in $arr {
+    #{$prefix}#{$key} {
+      @if ($value != null) {
+        #{$prop}: $value;
+      } @else {
+        #{$prop}: $key;
+      }
+    }
+  }
+}
+
+@mixin createFontFace($name, $weight, $src, $style: normal) {
+  @font-face {
+    font-family: $name;
+    font-weight: $weight;
+    font-style: $style;
+    font-display: swap;
+    src: url($src);
+  }
+}
+
+@mixin setImageQuality {
+  image-rendering: -moz-crisp-edges; /* Firefox */
+  image-rendering: -o-crisp-edges; /* Opera */
+  image-rendering: -webkit-optimize-contrast; /* Safari */
+  image-rendering: optimize-contrast; /* CSS3 Proposed */
+  -ms-interpolation-mode: nearest-neighbor;
+}
+
+@mixin setSubMargin($px) {
+  margin-left: -$px;
+  margin-right: -$px;
+  padding-left: $px;
+  padding-right: $px;
+}
+
+@mixin setCoveredImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  border-radius: inherit;
+}
+
+@mixin setAcceleration {
+  -webkit-transform: translateZ(0);
+  -webkit-perspective: 1000;
+  -webkit-backface-visibility: hidden;
+}
+
+@mixin setTextLinesOverflow($lines: 1) {
+  display: -webkit-box;
+  -webkit-line-clamp: $lines;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+@mixin getMediaBetween($min, $max) {
+  @media screen and (min-width: $min) and (max-width: $max) {
+    @content;
+  }
+}
+
+@function getPercentSize($size, $per) {
+  @return $size * calc($per / 100);
+}
+
+@mixin setFlexedGrid($cols, $gap) {
+  flex: 0 0 calc(#{100% / $cols} - #{$gap * ($cols - 1) / $cols}px);
+  max-width: calc(#{100% / $cols} - #{$gap * ($cols - 1) / $cols}px);
+}
+
+@mixin setGrid($cols, $gapRow, $gapCol: $gapRow, $selector: li) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: #{$gapCol}px #{$gapRow}px;
+
+  > #{$selector} {
+    @include setFlexedGrid($cols, $gapRow);
+  }
+}
+
+@mixin setVerticalPadding($px) {
+  padding-top: $px;
+  padding-bottom: $px;
+}
+
+@mixin setHorizontalPadding($px) {
+  padding-left: $px;
+  padding-right: $px;
+}
+
+@mixin setHorizontalNegativeMargin($px) {
+  margin-left: -$px;
+  margin-right: -$px;
+  @include setHorizontalPadding($px);
+}
+
+@mixin setContainer($px) {
+  max-width: $px;
+  width: 100%;
+  margin: 0 auto;
+  // @include setHorizontalPadding($padding-lg);
+
+  // @include screen-lg {
+  //     @include setHorizontalPadding($padding-xl);
+  // }
+
+  // @include screen-xl {
+  //     @include setHorizontalPadding($padding-xxl);
+  // }
+}
+
+@function setAdaptiveSize($multiplier) {
+  @return calc((1vh + 1vw) * $multiplier);
+}
+
+/* Queries */
+@mixin screen-adaptive {
+  @media screen and (min-width: $adaptive) {
+    @content;
+  }
+}
+
+@mixin screen-xs {
+  @media screen and (min-width: $xs) {
+    @content;
+  }
+}
+
+@mixin screen-sm {
+  @media screen and (min-width: $sm) {
+    @content;
+  }
+}
+
+@mixin screen-md {
+  @media screen and (min-width: $md) {
+    @content;
+  }
+}
+
+@mixin screen-lg {
+  @media screen and (min-width: $lg) {
+    @content;
+  }
+}
+
+@mixin screen-xl {
+  @media screen and (min-width: $xl) {
+    @content;
+  }
+}
+
+@mixin screen-xxl {
+  @media screen and (min-width: $xxl) {
+    @content;
+  }
+}
+
+@mixin screen-xxxl {
+  @media screen and (min-width: $xxxl) {
+    @content;
+  }
+}
+
+/* Queries min */
+@mixin -screen-adaptive($offset: 0.2px) {
+  // @media screen and (max-width: ($adaptive - $offset)) {
+  //     @content;
+  // }
+}
+
+@mixin -screen-xs($offset: 0.2px) {
+  // @media screen and (max-width: ($xs - $offset)) {
+  //     @content;
+  // }
+}
+
+@mixin -screen-sm($offset: 0.2px) {
+  // @media screen and (max-width: ($sm - $offset)) {
+  //     @content;
+  // }
+}
+
+@mixin -screen-md($offset: 0.2px) {
+  // @media screen and (max-width: ($md - $offset)) {
+  //     @content;
+  // }
+}
+
+@mixin -screen-lg($offset: 0.2px) {
+  // @media screen and (max-width: ($lg - $offset)) {
+  //     @content;
+  // }
+}
+
+@mixin -screen-xl($offset: 0.2px) {
+  // @media screen and (max-width: ($xl - $offset)) {
+  //     @content;
+  // }
+}
+
+@mixin -screen-xxl($offset: 0.2px) {
+  // @media screen and (max-width: ($xxl - $offset)) {
+  //     @content;
+  // }
+}
+
+@mixin -screen-xxxl($offset: 0.2px) {
+  // @media screen and (max-width: ($xxxl - $offset)) {
+  //     @content;
+  // }
+}
+
+// Height breakpoints
+@mixin -screen-h-870 {
+  // @include screen-lg {
+  //     @media screen and (max-height: 870px) {
+  //         @content;
+  //     }
+  // }
+}
+
+@mixin -screen-h-720 {
+  // @include screen-lg {
+  //     @media screen and (max-height: 720px) {
+  //         @content;
+  //     }
+  // }
+}
+
+// Colors
+@function getColorBackground($opacity: 1) {
+  @return rgba($colorBackground, $opacity);
+}
+
+@function getColorTextMain($opacity: 1) {
+  @return rgba($colorTextMain, $opacity);
+}
+
+
+// Fonts
+@mixin setFontDefault(
+  $font-size: 16px,
+  $leading: 1.25,
+  $letterSpacing: normal,
+  $color: false
+) {
+  font: 700 $font-size/#{$leading} $default-font;
+  letter-spacing: $letterSpacing;
+  @if ($color) {
+    color: $color;
+  }
+}
+
+@mixin setSpaceGrotesk(
+  $fontSize: 16px,
+  $leading: 1.25,
+  $letterSpacing: normal,
+  $fontWeight: 400,
+  $color: false,
+  $isItalic: false
+) {
+  font: $fontWeight $fontSize/#{$leading} $fontSpaceGrotesk;
+  letter-spacing: $letterSpacing;
+  @if ($isItalic) {
+    font-style: $isItalic;
+  }
+  @if ($color) {
+    color: $color;
+  }
+}

@@ -1,0 +1,74 @@
+@use "../../shared/styles/mixins" as *;
+@use "../../shared/styles/vars" as *;
+
+.header_block {
+  display: flex;
+  align-self: center;
+  justify-content: space-between;
+  height: fit-content;
+  @include setContainer(151.2rem);
+  padding: 2.2rem 4rem 1.5rem;
+}
+
+.logo_block {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+
+  h4 {
+    @include setSpaceGrotesk(2rem, 1.2, -0.08em, 500, getColorTextMain());
+  }
+}
+
+.header_menu {
+  display: flex;
+  align-items: center;
+  gap: 3.2rem;
+}
+
+.header_menu_items {
+  cursor: pointer;
+  @include setSpaceGrotesk(1.6rem, 0.93, -0.04em, 500, getColorTextMain());
+  transition: all 0.4s ease-in-out;
+
+  &:hover {
+    animation: shake 0.5s ease-in-out both;
+    opacity: 1 !important;
+  }
+}
+
+@keyframes shake {
+  0% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(0.05rem);
+  }
+  60% {
+    transform: translateY(-0.05rem);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@media screen and (max-width: 820px) {
+  .header_menu, .button_conteiner {
+    display: none;
+  }
+}
+
+/*AOS*/
+.logo_block {
+  opacity: 0;
+}
+
+.header_menu_items {
+  opacity: 0;
+  transform: translateY(-1rem);
+}
+
+.button_conteiner {
+  opacity: 0;
+  transform: scale(0.95);
+}
